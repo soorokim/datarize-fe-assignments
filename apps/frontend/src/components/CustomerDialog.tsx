@@ -11,7 +11,12 @@ export const CustomerDialog = ({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) => {
-  const { data } = useCustomerQuery({ id });
+  const { data, error, isFetching } = useCustomerQuery({ id });
+
+  if (error && !isFetching) {
+    throw error;
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[50%]">
@@ -27,18 +32,16 @@ export const CustomerDialog = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(data as { date: string; imgSrc: string; price: number; product: string; quantity: number }[]).map(
-                ({ date, imgSrc, price, product }) => (
-                  <TableRow key={date + product}>
-                    <TableCell className="text-center">{date}</TableCell>
-                    <TableCell className="text-center">{product}</TableCell>
-                    <TableCell className="text-center"> {price.toLocaleString()}</TableCell>
-                    <TableCell className="text-center flex justify-center">
-                      <img src={imgSrc} className="w-32 h-32 object-cover" />
-                    </TableCell>
-                  </TableRow>
-                ),
-              )}
+              {data.map(({ date, imgSrc, price, product }) => (
+                <TableRow key={date + product}>
+                  <TableCell className="text-center">{date}</TableCell>
+                  <TableCell className="text-center">{product}</TableCell>
+                  <TableCell className="text-center"> {price.toLocaleString()}</TableCell>
+                  <TableCell className="text-center flex justify-center">
+                    <img src={imgSrc} className="w-32 h-32 object-cover" />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </DialogHeader>

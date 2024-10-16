@@ -9,8 +9,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const PurchaseFrequencyChart = ({ dateRange }: { dateRange?: { from: string; to: string } }) => {
-  const { data } = usePurchaseFrequencyQuery(dateRange);
+export const PurchaseFrequencyChart = ({ dateRange }: { dateRange: { from?: string; to?: string } }) => {
+  const { data, error, isFetching } = usePurchaseFrequencyQuery(dateRange);
+
+  if (error && !isFetching) {
+    throw error;
+  }
 
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">

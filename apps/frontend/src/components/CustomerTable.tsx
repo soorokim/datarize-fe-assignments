@@ -10,8 +10,12 @@ export const CustomerTable = ({
   sortBy: SortBy;
   onClickRow: (id: number) => void;
 }) => {
-  const { data } = useCustomerListQuery({ name, sortBy });
+  const { data, error, isFetching } = useCustomerListQuery({ name, sortBy });
   const handleOnClick = (id: number) => () => onClickRow(id);
+
+  if (error && !isFetching) {
+    throw error;
+  }
 
   return (
     <Table>
@@ -24,16 +28,14 @@ export const CustomerTable = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {(data as { id: number; name: string; count: number; totalAmount: number }[]).map(
-          ({ id, name, count, totalAmount }) => (
-            <TableRow key={id} onClick={handleOnClick(id)}>
-              <TableCell>{id}</TableCell>
-              <TableCell>{name}</TableCell>
-              <TableCell className="text-center"> {count}</TableCell>
-              <TableCell className="text-right">{totalAmount.toLocaleString()}</TableCell>
-            </TableRow>
-          ),
-        )}
+        {data.map(({ id, name, count, totalAmount }) => (
+          <TableRow key={id} onClick={handleOnClick(id)}>
+            <TableCell>{id}</TableCell>
+            <TableCell>{name}</TableCell>
+            <TableCell className="text-center"> {count}</TableCell>
+            <TableCell className="text-right">{totalAmount.toLocaleString()}</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
