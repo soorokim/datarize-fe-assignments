@@ -5,25 +5,22 @@ export interface IApiClient {
   get<TResponse>(path: string, config?: RequestConfig): Promise<TResponse>;
 }
 
-type ApiConfiguration = {};
-
 export default class ApiClient implements IApiClient {
   private client: AxiosInstance;
 
-  protected createAxiosClient(baseURL: string, apiConfiguration: ApiConfiguration): AxiosInstance {
+  protected createAxiosClient(baseURL: string): AxiosInstance {
     return Axios.create({
       baseURL,
       responseType: 'json' as const,
       headers: {
         'Content-Type': 'application/json',
-        ...(apiConfiguration && {}),
       },
       timeout: 10 * 1000,
     });
   }
 
-  constructor(baseURL: string, apiConfiguration: ApiConfiguration = {}) {
-    this.client = this.createAxiosClient(baseURL, apiConfiguration);
+  constructor(baseURL: string) {
+    this.client = this.createAxiosClient(baseURL);
   }
 
   async get<TResponse>(path: string, config?: RequestConfig): Promise<TResponse> {

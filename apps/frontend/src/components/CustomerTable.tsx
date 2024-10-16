@@ -21,7 +21,7 @@ export const CustomerTable = ({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px] text-center">ID</TableHead>
+          <TableHead className="text-center">ID</TableHead>
           <TableHead className="text-center">이름</TableHead>
           <TableHead className="text-center">총 구매 횟수</TableHead>
           <TableHead className="text-right">총 구매 금액</TableHead>

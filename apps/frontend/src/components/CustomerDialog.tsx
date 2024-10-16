@@ -25,7 +25,7 @@ export const CustomerDialog = ({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px] text-center">구매 날짜</TableHead>
+                <TableHead className="text-center">구매 날짜</TableHead>
                 <TableHead className="text-center">품목</TableHead>
                 <TableHead className="text-center">가격</TableHead>
                 <TableHead className="text-center">썸네일</TableHead>
