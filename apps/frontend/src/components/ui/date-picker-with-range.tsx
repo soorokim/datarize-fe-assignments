@@ -12,9 +12,6 @@ import { JULY_FIRST_DAY, JULY_LAST_DAY } from '@/constants';
 
 const DATE_FORMAT = 'y년 M월 d일';
 
-const toUTCString = (date?: Date) =>
-  date ? new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())) : undefined;
-
 const toKoFormatString = (date: Date) => format(date, DATE_FORMAT, { locale: ko });
 
 export function DatePickerWithRange({
@@ -29,17 +26,8 @@ export function DatePickerWithRange({
   });
 
   const handleOnChange = (data: DateRange | undefined) => {
-    if (data) {
-      const fromDate = toUTCString(data.from);
-      const toDate = toUTCString(data.to);
-
-      const utcDateRange = {
-        from: fromDate,
-        to: toDate,
-      };
-      onChange(utcDateRange);
-      setDate(data);
-    }
+    onChange(data);
+    setDate(data);
   };
 
   return (

@@ -5,19 +5,20 @@ import { DateRange } from 'react-day-picker';
 import { Button } from './ui/button';
 import { PurchaseFrequencyChart } from './PurchaseFrequencyChart';
 import { JULY_FIRST_DAY, JULY_LAST_DAY } from '@/constants';
+import { kstToUtc } from '@/lib/utils';
 
 export const PurchaseFrequencyCard = () => {
   const dateRangeRef = useRef<DateRange | undefined>();
   const [dateRange, setDateRange] = useState<{ from?: string; to?: string }>({
-    from: JULY_FIRST_DAY.toISOString(),
-    to: JULY_LAST_DAY.toISOString(),
+    from: kstToUtc(JULY_FIRST_DAY).toISOString(),
+    to: kstToUtc(JULY_LAST_DAY).toISOString(),
   });
 
   const onClick = () => {
     if (dateRangeRef.current) {
       setDateRange({
-        from: dateRangeRef.current.from?.toISOString(),
-        to: dateRangeRef.current.to?.toISOString(),
+        from: dateRangeRef.current.from && kstToUtc(dateRangeRef.current.from).toISOString(),
+        to: dateRangeRef.current.to && kstToUtc(dateRangeRef.current.to).toISOString(),
       });
     }
   };
