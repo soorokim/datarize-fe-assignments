@@ -1,19 +1,24 @@
+import { apiClient } from '@/core/ApiClient';
 import { objectToSearchParams } from '@/lib/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
+export type SortBy = 'asc' | 'desc' | '';
 type Params = {
-  sortBy?: 'asc' | 'desc' | '';
-  name?: string;
+  sortBy: SortBy;
+  name: string;
 };
 
-const getCustomers = async (params: Params) =>
-  await (
-    await fetch('http://localhost:4000/api/customers' + objectToSearchParams(params), {
-      method: 'get',
-    })
-  ).json();
+type Response = {
+  id: number;
+  name: string;
+  count: number;
+  totalAmount: number;
+}[];
 
-export const useCustomerListQuery = (params: Params = {}) =>
+const getCustomers = async (params: Params) =>
+  await apiClient.get<Response>('/api/customers' + objectToSearchParams(params));
+
+export const useCustomerListQuery = (params: Params) =>
   useSuspenseQuery({
     queryKey: ['/api/customers', params],
     queryFn: () => getCustomers(params),
