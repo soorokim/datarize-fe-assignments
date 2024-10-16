@@ -1,5 +1,4 @@
 import { apiClient } from '@/core/ApiClient';
-import { objectToSearchParams } from '@/lib/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 type Params = {
@@ -13,7 +12,7 @@ type Response = {
 }[];
 
 const getPurchaseFrequency = async (params: Params) =>
-  await apiClient.get<Response>('/api/purchase-frequency' + objectToSearchParams(params));
+  await apiClient.get<Response>('/api/purchase-frequency', { params });
 
 export const usePurchaseFrequencyQuery = (params: Params) =>
   useSuspenseQuery({
