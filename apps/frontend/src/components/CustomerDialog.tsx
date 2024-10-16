@@ -12,11 +12,7 @@ export const CustomerDialog = ({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) => {
-  const { data, error, isFetching } = useCustomerQuery({ id });
-
-  if (error && !isFetching) {
-    throw error;
-  }
+  const { data } = useCustomerQuery({ id });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

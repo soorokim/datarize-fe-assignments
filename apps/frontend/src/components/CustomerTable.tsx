@@ -11,12 +11,8 @@ export const CustomerTable = ({
   sortBy: SortBy;
   onClickRow: (id: number) => void;
 }) => {
-  const { data, error, isFetching } = useCustomerListQuery({ name, sortBy });
+  const { data } = useCustomerListQuery({ name, sortBy });
   const handleOnClick = (id: number) => () => onClickRow(id);
-
-  if (error && !isFetching) {
-    throw error;
-  }
 
   return (
     <Table>
