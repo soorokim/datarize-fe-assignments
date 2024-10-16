@@ -61,6 +61,7 @@ export const CustomerListCard = () => {
           </div>
         </form>
       </CardHeader>
+      <CardContent className="h-[720px] overflow-auto">
         <Suspense fallback="loading...">
           <CustomerTable name={name} sortBy={sortBy} onClickRow={onClickRow} />
         </Suspense>
