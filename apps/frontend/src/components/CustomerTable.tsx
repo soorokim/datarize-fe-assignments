@@ -1,8 +1,17 @@
 import { useCustomerListQuery } from '@/queries/useCustomerListQuery';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 
-export const CustomerTable = ({ name, sortBy }: { name: string; sortBy: 'asc' | 'desc' | '' }) => {
+export const CustomerTable = ({
+  name,
+  sortBy,
+  onClickRow,
+}: {
+  name: string;
+  sortBy: 'asc' | 'desc' | '';
+  onClickRow: (id: number) => void;
+}) => {
   const { data } = useCustomerListQuery({ name, sortBy });
+  const handleOnClick = (id: number) => () => onClickRow(id);
 
   return (
     <Table>
@@ -17,7 +26,7 @@ export const CustomerTable = ({ name, sortBy }: { name: string; sortBy: 'asc' | 
       <TableBody>
         {(data as { id: number; name: string; count: number; totalAmount: number }[]).map(
           ({ id, name, count, totalAmount }) => (
-            <TableRow key={id}>
+            <TableRow key={id} onClick={handleOnClick(id)}>
               <TableCell>{id}</TableCell>
               <TableCell>{name}</TableCell>
               <TableCell className="text-center"> {count}</TableCell>

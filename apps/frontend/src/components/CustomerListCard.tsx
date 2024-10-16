@@ -3,11 +3,14 @@ import { CustomerTable } from './CustomerTable';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { CustomerDialog } from './CustomerDialog';
 
 export const CustomerListCard = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState('');
   const [sortBy, setSortBy] = useState<'asc' | 'desc' | ''>('');
+  const [visible, setVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState(0);
 
   const onSearch = () => {
     if (inputRef.current) {
@@ -25,6 +28,11 @@ export const CustomerListCard = () => {
     if (inputRef.current) {
       inputRef.current.value = '';
     }
+  };
+
+  const onClickRow = (id: number) => {
+    setSelectedId(id);
+    setVisible(true);
   };
 
   return (
@@ -50,9 +58,14 @@ export const CustomerListCard = () => {
           </Button>
         </div>
         <Suspense fallback="loading...">
-          <CustomerTable name={name} sortBy={sortBy} />
+          <CustomerTable name={name} sortBy={sortBy} onClickRow={onClickRow} />
         </Suspense>
       </CardContent>
+      {visible && (
+        <Suspense fallback={'loading...'}>
+          <CustomerDialog id={selectedId} open={visible} onOpenChange={setVisible} />
+        </Suspense>
+      )}
     </Card>
   );
 };
