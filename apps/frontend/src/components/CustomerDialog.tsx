@@ -1,6 +1,7 @@
 import { useCustomerQuery } from '@/queries/useCustomerQuery';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table } from './ui/table';
+import { numberToWonString } from '@/lib/utils';
 
 export const CustomerDialog = ({
   id,
@@ -36,7 +37,7 @@ export const CustomerDialog = ({
                 <TableRow key={date + product}>
                   <TableCell className="text-center">{date}</TableCell>
                   <TableCell className="text-center">{product}</TableCell>
-                  <TableCell className="text-center"> {price.toLocaleString()}</TableCell>
+                  <TableCell className="text-center"> {numberToWonString(price)}</TableCell>
                   <TableCell className="text-center flex justify-center">
                     <img src={imgSrc} className="w-32 h-32 object-cover" />
                   </TableCell>

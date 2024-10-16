@@ -1,5 +1,6 @@
 import { SortBy, useCustomerListQuery } from '@/queries/useCustomerListQuery';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
+import { numberToWonString } from '@/lib/utils';
 
 export const CustomerTable = ({
   name,
@@ -33,7 +34,7 @@ export const CustomerTable = ({
             <TableCell>{id}</TableCell>
             <TableCell>{name}</TableCell>
             <TableCell className="text-center"> {count}</TableCell>
-            <TableCell className="text-right">{totalAmount.toLocaleString()}</TableCell>
+            <TableCell className="text-right">{numberToWonString(totalAmount)}</TableCell>
           </TableRow>
         ))}
       </TableBody>
