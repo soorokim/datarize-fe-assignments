@@ -4,11 +4,12 @@ import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { CustomerDialog } from './CustomerDialog';
+import { SortBy } from '@/queries/useCustomerListQuery';
 
 export const CustomerListCard = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState('');
-  const [sortBy, setSortBy] = useState<'asc' | 'desc' | ''>('');
+  const [sortBy, setSortBy] = useState<SortBy>('');
   const [visible, setVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
 
@@ -18,11 +19,11 @@ export const CustomerListCard = () => {
     }
   };
 
-  const onClickSort = (sort: 'asc' | 'desc') => () => {
+  const onClickSort = (sort: SortBy) => () => {
     setSortBy(sort);
   };
 
-  const onInitialize = () => {
+  const onReset = () => {
     setSortBy('');
     setName('');
     if (inputRef.current) {
@@ -53,7 +54,7 @@ export const CustomerListCard = () => {
               오름차순
             </Button>
           )}
-          <Button onClick={onInitialize} variant="outline">
+          <Button onClick={onReset} variant="outline">
             초기화
           </Button>
         </div>
@@ -62,7 +63,7 @@ export const CustomerListCard = () => {
         </Suspense>
       </CardContent>
       {visible && (
-        <Suspense fallback={'loading...'}>
+        <Suspense fallback="loading...">
           <CustomerDialog id={selectedId} open={visible} onOpenChange={setVisible} />
         </Suspense>
       )}

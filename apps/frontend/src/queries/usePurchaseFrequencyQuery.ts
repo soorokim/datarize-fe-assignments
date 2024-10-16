@@ -12,10 +12,10 @@ type Response = {
   range: string;
 }[];
 
-const getPurchaseFrequency = async (params?: Params) =>
-  await apiClient.get<Response>('/api/purchase-frequency' + (params !== undefined ? objectToSearchParams(params) : ''));
+const getPurchaseFrequency = async (params: Params) =>
+  await apiClient.get<Response>('/api/purchase-frequency' + objectToSearchParams(params));
 
-export const usePurchaseFrequencyQuery = (params?: Params) =>
+export const usePurchaseFrequencyQuery = (params: Params) =>
   useSuspenseQuery({
     queryKey: ['/api/purchase-frequency', params],
     queryFn: () => getPurchaseFrequency(params),

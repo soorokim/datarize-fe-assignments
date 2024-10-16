@@ -1,4 +1,4 @@
-import { useCustomerListQuery } from '@/queries/useCustomerListQuery';
+import { SortBy, useCustomerListQuery } from '@/queries/useCustomerListQuery';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 
 export const CustomerTable = ({
@@ -7,7 +7,7 @@ export const CustomerTable = ({
   onClickRow,
 }: {
   name: string;
-  sortBy: 'asc' | 'desc' | '';
+  sortBy: SortBy;
   onClickRow: (id: number) => void;
 }) => {
   const { data } = useCustomerListQuery({ name, sortBy });

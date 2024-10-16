@@ -4,10 +4,14 @@ import { Suspense, useRef, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import { Button } from './ui/button';
 import { PurchaseFrequencyChart } from './PurchaseFrequencyChart';
+import { JULY_FIRST_DAY, JULY_LAST_DAY } from '@/constants';
 
 export const PurchaseFrequencyCard = () => {
   const dateRangeRef = useRef<DateRange | undefined>();
-  const [dateRange, setDateRange] = useState<{ from: string; to: string }>();
+  const [dateRange, setDateRange] = useState<{ from: string; to: string }>({
+    from: JULY_FIRST_DAY.toISOString(),
+    to: JULY_LAST_DAY.toISOString(),
+  });
 
   const onClick = () => {
     if (dateRangeRef.current) {
@@ -32,7 +36,7 @@ export const PurchaseFrequencyCard = () => {
           <DatePickerWithRange onChange={onChangeDateRange} />
           <Button onClick={onClick}>검색</Button>
         </div>
-        <Suspense fallback={'loading...'}>
+        <Suspense fallback="loading...">
           <PurchaseFrequencyChart dateRange={dateRange} />
         </Suspense>
       </CardContent>

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ko } from 'date-fns/locale';
+import { JULY_FIRST_DAY, JULY_LAST_DAY } from '@/constants';
 
 const DATE_FORMAT = 'y년 M월 d일';
 
@@ -22,7 +23,10 @@ export function DatePickerWithRange({
 }: Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> & {
   onChange: (data: DateRange | undefined) => void;
 }) {
-  const [date, setDate] = React.useState<DateRange | undefined>();
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: JULY_FIRST_DAY,
+    to: JULY_LAST_DAY,
+  });
 
   const handleOnChange = (data: DateRange | undefined) => {
     if (data) {
@@ -67,7 +71,7 @@ export function DatePickerWithRange({
             locale={ko}
             initialFocus
             mode="range"
-            defaultMonth={new Date(Date.UTC(2024, 6, 1, -9))}
+            defaultMonth={JULY_FIRST_DAY}
             selected={date}
             onSelect={handleOnChange}
             numberOfMonths={1}
