@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { CustomerTable } from './CustomerTable';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Input } from './ui/input';
@@ -6,18 +6,13 @@ import { Button } from './ui/button';
 import { CustomerDialog } from './CustomerDialog';
 import { SortBy } from '@/queries/useCustomerListQuery';
 
+const USERNAME_INPUT_NAME = 'name';
+
 export const CustomerListCard = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState('');
   const [sortBy, setSortBy] = useState<SortBy>('');
   const [visible, setVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
-
-  const onSearch = () => {
-    if (inputRef.current) {
-      setName(inputRef.current.value);
-    }
-  };
 
   const onClickSort = (sort: SortBy) => () => {
     setSortBy(sort);
@@ -26,9 +21,6 @@ export const CustomerListCard = () => {
   const onReset = () => {
     setSortBy('');
     setName('');
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
   };
 
   const onClickRow = (id: number) => {
@@ -36,28 +28,39 @@ export const CustomerListCard = () => {
     setVisible(true);
   };
 
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get(USERNAME_INPUT_NAME);
+    if (typeof name === 'string') {
+      setName(name ?? '');
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>고객 목록</CardTitle>
+        <form onSubmit={onSubmit}>
+          <div className="flex gap-2">
+            <Input name={USERNAME_INPUT_NAME} className="w-200" placeholder="이름을 입력하세요" />
+            <Button type="submit">검색</Button>
+
+            {sortBy === 'asc' ? (
+              <Button onClick={onClickSort('desc')} variant="outline" type="button">
+                내림차순
+              </Button>
+            ) : (
+              <Button onClick={onClickSort('asc')} variant="outline" type="button">
+                오름차순
+              </Button>
+            )}
+            <Button onClick={onReset} variant="outline" type="reset">
+              초기화
+            </Button>
+          </div>
+        </form>
       </CardHeader>
-      <CardContent>
-        <div className="flex gap-2">
-          <Input ref={inputRef} className="w-200" placeholder="이름을 입력하세요" />
-          <Button onClick={onSearch}>검색</Button>
-          {sortBy === 'asc' ? (
-            <Button onClick={onClickSort('desc')} variant="outline">
-              내림차순
-            </Button>
-          ) : (
-            <Button onClick={onClickSort('asc')} variant="outline">
-              오름차순
-            </Button>
-          )}
-          <Button onClick={onReset} variant="outline">
-            초기화
-          </Button>
-        </div>
         <Suspense fallback="loading...">
           <CustomerTable name={name} sortBy={sortBy} onClickRow={onClickRow} />
         </Suspense>
